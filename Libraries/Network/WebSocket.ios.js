@@ -17,7 +17,39 @@ var WebSocketBase = require('WebSocketBase');
 
 class WebSocket extends WebSocketBase {
 
-  connectToSocketImpl(): void {
+
+
+  connectToSocketImpl(url): void {
+    // onMessage,
+    // onFail,
+    // onClose
+    // onOpen,
+    RCTSocketManager.connect(url,
+      (message) =>{ 
+        console.log(message) 
+        this.onmessage && this.onmessage({
+          data:message
+        });
+      },
+      errorMessage => { 
+        console.log(errorMessage)
+        this.onError && this.onError(new Error(errorMessage))
+      },
+      (code,reason,clean) => { 
+        console.log("closed",err,reason,clean)
+        this.onClose && this.onClose({
+          code:code,
+          reason: reason,
+          clean: clean
+        })
+      },
+      () =>{ 
+        console.log("opened");
+        this.readyState = this.OPEN
+        this.onOpen && this.onOpen();
+       }
+
+    );
     // TODO
   }
 
@@ -25,8 +57,8 @@ class WebSocket extends WebSocketBase {
     // TODO
   }
 
-  sendStringImp(): void {
-    // TODO
+  sendStringImpl(message): void {
+    RCTSocketManager.send_message(message);
   }
 
   sendArrayBufferImpl(): void {
