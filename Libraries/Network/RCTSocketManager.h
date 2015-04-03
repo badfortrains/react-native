@@ -10,7 +10,12 @@
 #import <Foundation/Foundation.h>
 
 #import "RCTBridgeModule.h"
+#import "SRWebSocket.h"
 
 @interface RCTSocketManager : NSObject <RCTBridgeModule>
+
+@end
+
+@interface RCTSocket : NSObject <SRWebSocketDelegate>
 
 @end

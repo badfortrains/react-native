@@ -128,6 +128,10 @@ function setupXHR() {
   GLOBAL.fetch = require('fetch');
 }
 
+function setupWebSockets() {
+  GLOBAL.WebSocket = require('WebSocket');
+}
+
 function setupGeolocation() {
   GLOBAL.navigator = GLOBAL.navigator || {};
   GLOBAL.navigator.geolocation = require('Geolocation');
@@ -139,4 +143,5 @@ setupTimers();
 setupAlert();
 setupPromise();
 setupXHR();
+setupWebSockets();
 setupGeolocation();

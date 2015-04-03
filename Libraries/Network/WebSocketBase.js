@@ -38,7 +38,8 @@ class WebSocketBase {
     this.CLOSING = 2;
     this.CLOSED = 3;
 
-    var parsedUrl = parseUrl(url);
+    //var parsedUrl = parseUrl(url);
+    var parsedUrl = ["localhost:9000",9000,"chat"]
     if (!parsedUrl) {
       throw new Error('Failed to construct \`WebSocket\`: The url \'' + url + '\' is invalid.');
     }
@@ -48,7 +49,7 @@ class WebSocketBase {
       protocols = [];
     }
 
-    this.connectToSocketImpl(host, port, resourceName, resource);
+    this.connectToSocketImpl(host, port, resourceName);
   }
 
   close(code: ?number, reason: ?string): void {

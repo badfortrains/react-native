@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1372B7371AB03E7B00659ED6 /* RCTReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 1372B7361AB03E7B00659ED6 /* RCTReachability.m */; };
 		58B512081A9E6CE300147676 /* RCTDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B512071A9E6CE300147676 /* RCTDataManager.m */; };
+		99CB8C7F1ACE2BB40044EEE8 /* RCTSocketManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 99CB8C7D1ACE2BB40044EEE8 /* RCTSocketManager.m */; };
+		99CB8C821ACF02A30044EEE8 /* SRWebSocket.h in Sources */ = {isa = PBXBuildFile; fileRef = 99CB8C801ACF02A30044EEE8 /* SRWebSocket.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +31,9 @@
 		58B511DB1A9E6C8500147676 /* libRCTNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRCTNetwork.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		58B512061A9E6CE300147676 /* RCTDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTDataManager.h; sourceTree = "<group>"; };
 		58B512071A9E6CE300147676 /* RCTDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTDataManager.m; sourceTree = "<group>"; };
+		99CB8C7C1ACE2BB40044EEE8 /* RCTSocketManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTSocketManager.h; sourceTree = "<group>"; };
+		99CB8C7D1ACE2BB40044EEE8 /* RCTSocketManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTSocketManager.m; sourceTree = "<group>"; };
+		99CB8C801ACF02A30044EEE8 /* SRWebSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SRWebSocket.h; path = ../RCTWebSocketDebugger/SRWebSocket.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +50,9 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				99CB8C801ACF02A30044EEE8 /* SRWebSocket.h */,
+				99CB8C7C1ACE2BB40044EEE8 /* RCTSocketManager.h */,
+				99CB8C7D1ACE2BB40044EEE8 /* RCTSocketManager.m */,
 				58B512061A9E6CE300147676 /* RCTDataManager.h */,
 				58B512071A9E6CE300147676 /* RCTDataManager.m */,
 				1372B7351AB03E7B00659ED6 /* RCTReachability.h */,
@@ -119,6 +127,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99CB8C821ACF02A30044EEE8 /* SRWebSocket.h in Sources */,
+				99CB8C7F1ACE2BB40044EEE8 /* RCTSocketManager.m in Sources */,
 				1372B7371AB03E7B00659ED6 /* RCTReachability.m in Sources */,
 				58B512081A9E6CE300147676 /* RCTDataManager.m in Sources */,
 			);

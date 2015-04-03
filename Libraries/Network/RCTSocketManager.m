@@ -1,14 +1,29 @@
-#import "RCTDataManager.h"
+#import "RCTSocketManager.h"
 
 #import "RCTAssert.h"
 #import "RCTLog.h"
 #import "RCTUtils.h"
 
-@implementation RCTSocketManager
 
-- (void) connect()
+@implementation RCTSocket{
+    SRWebSocket *_webSocket;
+}
+
+- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
 {
-  RCTExport()
+    NSLog(@"Received \"%@\"", message);
+}
+
+@end
+
+
+@implementation RCTSocketManager{
+    
+}
+
+- (void) connect
+{
+    RCT_EXPORT(connect);
 }
 
 @end
