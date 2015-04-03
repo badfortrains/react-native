@@ -11,9 +11,7 @@
  */
 'use strict';
 
-var RCTDataManager = require('NativeModules').DataManager;
-
-var crc32 = require('crc32');
+var RCTSocketManager = require('NativeModules').SocketManager;
 
 var WebSocketBase = require('WebSocketBase');
 
