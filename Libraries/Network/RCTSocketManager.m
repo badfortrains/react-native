@@ -11,12 +11,12 @@
 @implementation RCTSocket{
     SRWebSocket *_webSocket;
     RCTBridge *_bridge;
-    NSInteger _idx;
+    NSNumber* _idx;
 }
 
 - (instancetype)init:(NSString *)url
                 bridge: (RCTBridge *)bridge
-                idx: (NSInteger) idx
+                idx: (NSNumber*) idx
  {
     if ((self = [super init])) {
         NSLog(@"create a web socket");
@@ -26,7 +26,7 @@
         NSURL* u = [NSURL URLWithString:url];
         if( u == NULL ){
             [_bridge.eventDispatcher sendDeviceEventWithName:@"websocketFailed"
-                                            body:@"badly formed url"];
+                                            body:@{@"message":@"badly formed url",@"id":_idx}];
             return self;
         }
 
@@ -45,7 +45,7 @@
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket;
 {
     [_bridge.eventDispatcher sendDeviceEventWithName:@"websocketOpen"
-                                                body:NULL];
+                                                body:@{@"id":_idx}];
 
     NSLog(@"Websocket Connected");
 }
@@ -53,7 +53,7 @@
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
 {
     [_bridge.eventDispatcher sendDeviceEventWithName:@"websocketMessage"
-                                                body:message];
+                                                body:@{@"data":message,@"id":_idx}];
 
     NSLog(@"Received \"%@\"", message);
 }
@@ -62,7 +62,7 @@
 {
 
     [_bridge.eventDispatcher sendDeviceEventWithName:@"websocketFailed"
-                                            body:[error localizedDescription]];
+                                            body:@{@"message":[error localizedDescription],@"id":_idx}];
     NSLog(@":( Websocket Failed With Error %@", error);
     _webSocket = nil;
 }
@@ -73,7 +73,8 @@
     NSDictionary *closeEvent =  @{
         @"code": [NSNumber numberWithInt:code],
         @"reason": reason,
-        @"clean": [NSNumber numberWithBool:wasClean]
+        @"clean": [NSNumber numberWithBool:wasClean],
+        @"id": _idx
         };
 
 
@@ -107,7 +108,7 @@
 {
     RCT_EXPORT();
     
-    _socketRegistry[current_id] = [[RCTSocket alloc] init:url bridge:_bridge idx: current_id];
+    _socketRegistry[current_id] = [[RCTSocket alloc] init:url bridge:_bridge idx: [NSNumber numberWithInt:current_id]];
     current_id++;
     
 }
