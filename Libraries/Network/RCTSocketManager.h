@@ -17,5 +17,5 @@
 @end
 
 @interface RCTSocket : NSObject <SRWebSocketDelegate>
-
+ 
 @end

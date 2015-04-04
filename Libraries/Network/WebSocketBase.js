@@ -46,7 +46,7 @@ class WebSocketBase {
     this.connectToSocketImpl(url);
   }
 
-  close(code: ?number, reason: ?string): void {
+  close(): void {
     if (this.readyState === WebSocketBase.CLOSING ||
         this.readyState === WebSocketBase.CLOSED) {
       return;
@@ -56,7 +56,7 @@ class WebSocketBase {
       this.cancelConnectionImpl();
     }
 
-    this.closeConnectionImpl(code, reason);
+    this.closeConnectionImpl();
   }
 
   send(data: any): void {
