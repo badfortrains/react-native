@@ -114,9 +114,10 @@
 }
 
 - (void) send_message:(NSString *)message
+            idx: (NSInteger)idx
 {
 	RCT_EXPORT();
-	[_socketRegistry[_socketRegistry.count-1] send:message];
+	[_socketRegistry[idx] send:message];
 }
 
 @end

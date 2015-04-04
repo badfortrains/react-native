@@ -20,7 +20,12 @@ var WebSocketId = 0;
 
 class WebSocket extends WebSocketBase {
 
+  unregisterEvents(): void{
+    this.subs.forEach(e => e.remove())
+  }
+
   registerEvents(id: number): void{
+    this._socketId = id;
     this.subs = [
       RCTDeviceEventEmitter.addListener(
         'websocketMessage',
@@ -49,7 +54,9 @@ class WebSocket extends WebSocketBase {
           if(ev.id != id)
             return;
           console.log("closed",ev.err,ev.reason,ev.clean)
+          this.readyState = this.CLOSED
           this.onClose && this.onclose(ev)
+          this.unregisterEvents();
         }.bind(this)
       ),
       RCTDeviceEventEmitter.addListener(
@@ -59,11 +66,11 @@ class WebSocket extends WebSocketBase {
             return;
           console.log("websocket fail",ev.message)
           this.onError && this.onerror(new Error(ev.message))
+          this.unregisterEvents();
         }.bind(this)
       )
     ]
   }
-
 
   connectToSocketImpl(url: string): void {
     RCTSocketManager.connect(url);
@@ -80,7 +87,7 @@ class WebSocket extends WebSocketBase {
 
   sendStringImpl(message): void {
     console.log("send message",message)
-    RCTSocketManager.send_message(message);
+    RCTSocketManager.send_message(message,this._socketId);
   }
 
   sendArrayBufferImpl(): void {
