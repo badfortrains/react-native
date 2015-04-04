@@ -12,6 +12,7 @@
 'use strict';
 
 var RCTSocketManager = require('NativeModules').SocketManager;
+var RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
 
 var WebSocketBase = require('WebSocketBase');
 
@@ -20,37 +21,46 @@ class WebSocket extends WebSocketBase {
 
 
   connectToSocketImpl(url): void {
-    // onMessage,
-    // onFail,
-    // onClose
-    // onOpen,
-    RCTSocketManager.connect(url,
-      (message) =>{ 
+    RCTSocketManager.connect(url);
+
+    RCTDeviceEventEmitter.addListener(
+      'websocketMessage',
+      function(message){
         console.log(message) 
         this.onmessage && this.onmessage({
           data:message
         });
-      },
-      errorMessage => { 
-        console.log(errorMessage)
-        this.onError && this.onError(new Error(errorMessage))
-      },
-      (code,reason,clean) => { 
-        console.log("closed",err,reason,clean)
-        this.onClose && this.onClose({
-          code:code,
-          reason: reason,
-          clean: clean
-        })
-      },
-      () =>{ 
+      }.bind(this)
+    )
+
+    RCTDeviceEventEmitter.addListener(
+      'websocketOpen',
+      function(){
         console.log("opened");
         this.readyState = this.OPEN
-        this.onOpen && this.onOpen();
-       }
+        this.onopen && this.onopen();
+      }.bind(this)
+    )
 
-    );
-    // TODO
+    RCTDeviceEventEmitter.addListener(
+      'websocketClosed',
+      function(closedEvent){
+        console.log("closed",closedEvent.err,closedEvent.reason,closedEvent.clean)
+        this.onClose && this.onclose(closedEvent)
+      }.bind(this)
+    )
+
+    RCTDeviceEventEmitter.addListener(
+      'websocketFailed',
+      function(errorMessage){
+        console.log("websocket fail",errorMessage)
+        this.onError && this.onerror(new Error(errorMessage))
+      }.bind(this)
+    )
+  }
+
+  closeConnectionImpl(): void{
+    console.log("close connection")
   }
 
   cancelConnectingImpl(): void {
@@ -58,6 +68,7 @@ class WebSocket extends WebSocketBase {
   }
 
   sendStringImpl(message): void {
+    console.log("send message",message)
     RCTSocketManager.send_message(message);
   }
 
