@@ -42,6 +42,12 @@
 	[_webSocket send:data];
 }
 
+- (void)close;
+{
+    [_webSocket close];
+}
+
+
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket;
 {
     [_bridge.eventDispatcher sendDeviceEventWithName:@"websocketOpen"
@@ -119,5 +125,18 @@
 	RCT_EXPORT();
 	[_socketRegistry[idx] send:message];
 }
+
+- (void) destroy:(NSInteger)idx
+{
+    RCT_EXPORT();
+    _socketRegistry[idx] = nil;
+}
+
+- (void) close:(NSInteger)idx
+{
+    RCT_EXPORT();
+    [_socketRegistry[idx] close];
+}
+
 
 @end
