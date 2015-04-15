@@ -14,6 +14,7 @@
     NSNumber* _idx;
 }
 
+
 - (instancetype)init:(NSString *)url
                 bridge: (RCTBridge *)bridge
                 idx: (NSNumber*) idx
@@ -52,16 +53,12 @@
 {
     [_bridge.eventDispatcher sendDeviceEventWithName:@"websocketOpen"
                                                 body:@{@"id":_idx}];
-
-    NSLog(@"Websocket Connected");
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
 {
     [_bridge.eventDispatcher sendDeviceEventWithName:@"websocketMessage"
                                                 body:@{@"data":message,@"id":_idx}];
-
-    NSLog(@"Received \"%@\"", message);
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;
@@ -69,7 +66,6 @@
 
     [_bridge.eventDispatcher sendDeviceEventWithName:@"websocketFailed"
                                             body:@{@"message":[error localizedDescription],@"id":_idx}];
-    NSLog(@":( Websocket Failed With Error %@", error);
     _webSocket = nil;
 }
 
@@ -87,7 +83,6 @@
     [_bridge.eventDispatcher sendDeviceEventWithName:@"websocketClosed"
                                                 body:closeEvent];
 
-    NSLog(@"WebSocket closed");
     _webSocket = nil;
 }
 
