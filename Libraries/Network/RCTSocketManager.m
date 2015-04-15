@@ -14,7 +14,6 @@
     NSNumber* _idx;
 }
 
-
 - (instancetype)init:(NSString *)url
                 bridge: (RCTBridge *)bridge
                 idx: (NSNumber*) idx
@@ -93,6 +92,9 @@
     RCTSparseArray *_socketRegistry;
     NSInteger current_id;
 }
+
+RCT_EXPORT_MODULE()
+
 @synthesize bridge = _bridge;
 
 - (instancetype)init
