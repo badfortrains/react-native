@@ -20,64 +20,10 @@ var WebSocketId = 0;
 
 class WebSocket extends WebSocketBase {
 
-  unregisterEvents(): void{
-    this.subs.forEach(e => e.remove())
-    this.subs = [];
-  }
-
-  registerEvents(id: number): void{
-    this.subs = [
-      RCTDeviceEventEmitter.addListener(
-        'websocketMessage',
-        function(ev){
-          if(ev.id != id)
-            return;
-          console.log(ev.data) 
-          this.onmessage && this.onmessage({
-            data:ev.data
-          });
-        }.bind(this)
-      ),
-      RCTDeviceEventEmitter.addListener(
-        'websocketOpen',
-        function(ev){
-          if(ev.id != id)
-            return;
-          console.log("opened");
-          this.readyState = this.OPEN
-          this.onopen && this.onopen();
-        }.bind(this)
-      ),
-      RCTDeviceEventEmitter.addListener(
-        'websocketClosed',
-        function(ev){
-          if(ev.id != id)
-            return;
-          console.log("closed",ev.err,ev.reason,ev.clean)
-          this.readyState = this.CLOSED
-          this.onClose && this.onclose(ev)
-          this.unregisterEvents();
-          RCTSocketManager.destroy(id)
-        }.bind(this)
-      ),
-      RCTDeviceEventEmitter.addListener(
-        'websocketFailed',
-        function(ev){
-          if(ev.id != id)
-            return;
-          console.log("websocket fail",ev.message)
-          this.onError && this.onerror(new Error(ev.message))
-          this.unregisterEvents();
-          RCTSocketManager.destroy(id)
-        }.bind(this)
-      )
-    ]
-  }
-
   connectToSocketImpl(url: string): void {
     RCTSocketManager.connect(url);
     this._socketId = WebSocketId++;
-    this.registerEvents(this._socketId);
+    this._registerEvents(this._socketId);
   }
 
   closeConnectionImpl(): void{
@@ -88,13 +34,62 @@ class WebSocket extends WebSocketBase {
     RCTSocketManager.close(this._socketId)
   }
 
-  sendStringImpl(message): void {
-    console.log("send message",message)
+  sendStringImpl(message: string): void {
     RCTSocketManager.send_message(message,this._socketId);
   }
 
   sendArrayBufferImpl(): void {
     // TODO
+  }
+
+  _unregisterEvents(): void{
+    this.subs.forEach(e => e.remove())
+    this.subs = [];
+  }
+
+  _registerEvents(id: number): void{
+    this.subs = [
+      RCTDeviceEventEmitter.addListener(
+        'websocketMessage',
+        function(ev){
+          if(ev.id != id)
+            return;
+          this.onmessage && this.onmessage({
+            data:ev.data
+          });
+        }.bind(this)
+      ),
+      RCTDeviceEventEmitter.addListener(
+        'websocketOpen',
+        function(ev){
+          if(ev.id != id)
+            return;
+          this.readyState = this.OPEN
+          this.onopen && this.onopen();
+        }.bind(this)
+      ),
+      RCTDeviceEventEmitter.addListener(
+        'websocketClosed',
+        function(ev){
+          if(ev.id != id)
+            return;
+          this.readyState = this.CLOSED
+          this.onClose && this.onclose(ev)
+          this._unregisterEvents();
+          RCTSocketManager.destroy(id)
+        }.bind(this)
+      ),
+      RCTDeviceEventEmitter.addListener(
+        'websocketFailed',
+        function(ev){
+          if(ev.id != id)
+            return;
+          this.onError && this.onerror(new Error(ev.message))
+          this._unregisterEvents();
+          RCTSocketManager.destroy(id)
+        }.bind(this)
+      )
+    ]
   }
 
 }
